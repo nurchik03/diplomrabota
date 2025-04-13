@@ -87,6 +87,7 @@ document.getElementById('order').addEventListener('click', () => {
     total: `${totalPrice}₽`
   };
 
-  tg.sendData(JSON.stringify(data));
-  tg.close();
+  console.log('Отправляем данные:', JSON.stringify(data));  // Логируем данные перед отправкой
+  tg.sendData(JSON.stringify(data));  // Отправляем данные в Telegram
+  tg.close();  // Закрываем WebApp
 });
