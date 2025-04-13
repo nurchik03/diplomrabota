@@ -1,156 +1,59 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Shop</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 300;
-            background: var(--tg-theme-bg-color, #f0f0f0);
-            color: var(--tg-theme-text-color, #222);
-            padding: 20px;
-        }
-
-        #main, #form {
-            max-width: 400px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        h1 {
-            font-weight: 600;
-            margin: 40px 0 20px;
-            color: #db5d5d;
-        }
-
-        img {
-            width: 100px;
-            margin: 20px 0;
-        }
-
-        p {
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-
-        button {
-            border: none;
-            border-radius: 10px;
-            padding: 15px 30px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            color: #fff;
-            background-color: #db5d5d;
-        }
-
-        button:hover {
-            background-color: #bb4747;
-        }
-
-        input {
-            width: 90%;
-            padding: 15px;
-            margin: 10px auto;
-            font-size: 16px;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            display: block;
-        }
-
-        input:focus {
-            border-color: #db5d5d;
-            outline: none;
-        }
-
-        #error {
-            color: red;
-            margin-top: 10px;
-        }
-
-        #form {
-            display: none;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fast Food Menu</title>
+  <link rel="stylesheet" href="style.css">
+ 
 </head>
 <body>
+  <div id="main">
+    <h1>Меню</h1>
 
-    <div id="main">
-        <h1>Онлайн-магазин</h1>
-        <img src="https://images.vexels.com/media/users/3/249523/isolated/preview/02783f79ece2cffaf68f8921f2c978be-pizza-color-stroke.png" alt="pizza">
-        <p>Добро пожаловать! Здесь вы можете заказать вкусную пиццу прямо из Telegram.</p>
-        <button id="buy">Купить</button>
+    <div class="item" data-name="Пицца" data-price="500">
+      <img src="https://cdn-icons-png.flaticon.com/512/3132/3132693.png" alt="Пицца" />
+      <h2>Пицца — 500с</h2>
+      <div class="controls">
+        <button class="minus">−</button>
+        <span class="count">0</span>
+        <button class="plus">+</button>
+      </div>
     </div>
 
-    <form id="form">
-        <input type="text" placeholder="Имя" id="user_name">
-        <input type="email" placeholder="Email" id="user_email">
-        <input type="tel" placeholder="Телефон" id="user_phone">
-        <div id="error"></div>
-        <button type="button" id="order">Оформить</button>
-    </form>
+    <div class="item" data-name="Бургер" data-price="300">
+      <img src="https://foni.papik.pro/uploads/posts/2024-10/foni-papik-pro-u8d9-p-kartinki-burger-na-prozrachnom-fone-7.png" alt="Бургер" />
+      <h2>Бургер — 300с</h2>
+      <div class="controls">
+        <button class="minus">−</button>
+        <span class="count">0</span>
+        <button class="plus">+</button>
+      </div>
+    </div>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script>
-        let tg = window.Telegram.WebApp;
-        let buy = document.getElementById("buy");
-        let order = document.getElementById("order");
-        let main = document.getElementById("main");
-        let form = document.getElementById("form");
+    <div class="item" data-name="Картошка фри" data-price="200">
+      <img src="https://cdn-icons-png.flaticon.com/512/8060/8060529.png" alt="Фри" />
+      <h2>Картошка фри — 200с</h2>
+      <div class="controls">
+        <button class="minus">−</button>
+        <span class="count">0</span>
+        <button class="plus">+</button>
+      </div>
+    </div>
 
-        tg.expand();
+    <div id="total">Итого: 0с</div>
+    <button class="submit" id="next">Оформить заказ</button>
+  </div>
 
-        buy.addEventListener("click", () => {
-            main.style.display = "none";
-            form.style.display = "block";
-            if (tg.initDataUnsafe.user) {
-                const { first_name = "", last_name = "" } = tg.initDataUnsafe.user;
-                document.getElementById("user_name").value = `${first_name} ${last_name}`;
-            }
-        });
+  <form id="form">
+    <input type="text" placeholder="Имя" id="user_name" />
+    <input type="email" placeholder="Email" id="user_email" />
+    <input type="tel" placeholder="Телефон" id="user_phone" />
+    <div id="error"></div>
+    <button type="button" class="submit" id="order">Оформить</button>
+  </form>
 
-        order.addEventListener("click", () => {
-            document.getElementById("error").innerText = '';
-
-            let name = document.getElementById("user_name").value.trim();
-            let email = document.getElementById("user_email").value.trim();
-            let phone = document.getElementById("user_phone").value.trim();
-
-            if (name.length < 2) {
-                document.getElementById("error").innerText = 'Пожалуйста, введите корректное имя.';
-                return;
-            }
-
-            if (!email.includes("@") || email.length < 5) {
-                document.getElementById("error").innerText = 'Пожалуйста, введите корректный email.';
-                return;
-            }
-
-            if (phone.length < 10) {
-                document.getElementById("error").innerText = 'Пожалуйста, введите корректный номер телефона.';
-                return;
-            }
-
-            let data = {
-                name: name,
-                email: email,
-                phone: phone
-            };
-
-            tg.sendData(JSON.stringify(data));
-            tg.close();
-        });
-    </script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="./script.js"></script>
 </body>
 </html>
