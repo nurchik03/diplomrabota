@@ -26,7 +26,7 @@ h1 {
 }
 
 .item {
-  background-color: var(--tg-theme-secondary-bg-color, #ffffff);
+  background-color: var(--tg-theme-secondary-bg-color, #db5d5d);
   border: 2px solid #db5d5d;
   border-radius: 12px;
   padding: 15px;
