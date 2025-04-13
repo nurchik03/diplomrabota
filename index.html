@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop</title>
+    <title>Online Shop</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap');
 
         * {
             margin: 0;
@@ -13,132 +13,144 @@
             box-sizing: border-box;
         }
 
-
         body {
             font-family: 'Montserrat', sans-serif;
-            font-weight: 200;
-            color: var(--tg-them-text-color);
-            background: var(--tg-them-bg-color);
+            font-weight: 300;
+            background: var(--tg-theme-bg-color, #f0f0f0);
+            color: var(--tg-theme-text-color, #222);
+            padding: 20px;
         }
 
-
-        #main {
-            width: 100%;
-            padding: 20px;
+        #main, #form {
+            max-width: 400px;
+            margin: 0 auto;
             text-align: center;
         }
 
-        h1{
-            margin-top: 50px;
-            margin-bottom: 10px;
+        h1 {
+            font-weight: 600;
+            margin: 40px 0 20px;
+            color: #db5d5d;
         }
 
-        img{
-            width: 70px;
-            margin: 30px auto;
+        img {
+            width: 100px;
+            margin: 20px 0;
         }
 
-        p{
-            width: 350px;
-            margin: 0 auto;
+        p {
+            margin-bottom: 30px;
+            line-height: 1.5;
         }
 
-        button{
-            border: 0;
-            border-radius: 5px;
-            margin-top: 50px;
-            height: 60px;
-            width: 200px;
-            font-size: 20px;
-            font-weight: 500;
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 500ms ease;
-            color: var(--tg-them-button-color);
-            background: var(--tg-them-button-text-color);
+            transition: 0.3s;
+            color: #fff;
+            background-color: #db5d5d;
         }
 
         button:hover {
-            background: var(--tg-them-secondary-bg-color);
+            background-color: #bb4747;
         }
 
-        #from{
-            display: none;
-            text-align: center;
-        }
-
-        input{
+        input {
             width: 90%;
-            outline: none;
-            margin: 10px 5%;
-            padding: 15px 10px;
-            font-size: 14px;
-            border: 2px solid silver;
-            border-radius: 5px;
+            padding: 15px;
+            margin: 10px auto;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            display: block;
         }
 
-        input:focus{
+        input:focus {
             border-color: #db5d5d;
+            outline: none;
         }
 
+        #error {
+            color: red;
+            margin-top: 10px;
+        }
 
+        #form {
+            display: none;
+        }
     </style>
 </head>
 <body>
+
     <div id="main">
-        <h1>Online shop</h1>
-        <img src="https://images.vexels.com/media/users/3/249523/isolated/preview/02783f79ece2cffaf68f8921f2c978be-pizza-color-stroke.png" alt="">
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio, qui accusamus earum laudantium quos iste, illum voluptatibus cumque harum quaerat fugiat quisquam tenetur. Voluptates nisi impedit ipsam, eveniet nostrum facilis?</p>
-        <button id="buy">купить</button>
+        <h1>Онлайн-магазин</h1>
+        <img src="https://images.vexels.com/media/users/3/249523/isolated/preview/02783f79ece2cffaf68f8921f2c978be-pizza-color-stroke.png" alt="pizza">
+        <p>Добро пожаловать! Здесь вы можете заказать вкусную пиццу прямо из Telegram.</p>
+        <button id="buy">Купить</button>
     </div>
+
     <form id="form">
         <input type="text" placeholder="Имя" id="user_name">
-        <input type="text" placeholder="email" id="user_email">
-        <input type="text" placeholder="Телефон" id="user_phone">
+        <input type="email" placeholder="Email" id="user_email">
+        <input type="tel" placeholder="Телефон" id="user_phone">
         <div id="error"></div>
-        <button id="order">Оформить</button>
+        <button type="button" id="order">Оформить</button>
     </form>
 
-
-    <script src="https://telegram.org/js/telegram-web-app.js?57"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         let tg = window.Telegram.WebApp;
-        let buy = document.getElementById("buy")
-        let order = document.getElementById("order")
+        let buy = document.getElementById("buy");
+        let order = document.getElementById("order");
+        let main = document.getElementById("main");
+        let form = document.getElementById("form");
+
         tg.expand();
 
         buy.addEventListener("click", () => {
-            document.getElementById("main").style.display = "none";
-            document.getElementById("form").style.display = "block";
-            document.getElementById("user_name").value = tg.initDataUnsafe.user.firs_name + " " + tg.initDataUnsafe.user.last_name;
+            main.style.display = "none";
+            form.style.display = "block";
+            if (tg.initDataUnsafe.user) {
+                const { first_name = "", last_name = "" } = tg.initDataUnsafe.user;
+                document.getElementById("user_name").value = `${first_name} ${last_name}`;
+            }
         });
 
         order.addEventListener("click", () => {
             document.getElementById("error").innerText = '';
-            let name = document.getElementById("user_name").value;        
-            let email = document.getElementById("user_email").value;        
-            let phone = document.getElementById("user_phone").value; 
-            if(name.lenght < 15) {
-                document.getElementById("error").innerText = 'Ошибка в имени';
+
+            let name = document.getElementById("user_name").value.trim();
+            let email = document.getElementById("user_email").value.trim();
+            let phone = document.getElementById("user_phone").value.trim();
+
+            if (name.length < 2) {
+                document.getElementById("error").innerText = 'Пожалуйста, введите корректное имя.';
                 return;
-            }       
-            if(email.lenght < 35) {
-                document.getElementById("error").innerText = 'Ошибка в email';
+            }
+
+            if (!email.includes("@") || email.length < 5) {
+                document.getElementById("error").innerText = 'Пожалуйста, введите корректный email.';
                 return;
-            }       
-            if(phone.lenght < 10) {
-                document.getElementById("error").innerText = 'Ошибка в номере телефона';
+            }
+
+            if (phone.length < 10) {
+                document.getElementById("error").innerText = 'Пожалуйста, введите корректный номер телефона.';
                 return;
-            }       
+            }
 
             let data = {
                 name: name,
                 email: email,
                 phone: phone
-            }
-            tg.sendData(JSON.stringify(data));
+            };
 
+            tg.sendData(JSON.stringify(data));
             tg.close();
-        })
+        });
     </script>
 </body>
 </html>
