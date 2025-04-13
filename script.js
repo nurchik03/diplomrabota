@@ -76,7 +76,7 @@ document.getElementById('order').addEventListener('click', () => {
     return;
   }
 
-  const totalPrice = Object.values(cart).reduce((acc, item) => acc + item.sum, 0);
+   const totalPrice = Object.values(cart).reduce((acc, item) => acc + item.sum, 0);
   const products = Object.entries(cart).map(([name, { count, sum }]) => `${name} × ${count} = ${sum}₽`).join(', ');
 
   const data = {
@@ -87,7 +87,7 @@ document.getElementById('order').addEventListener('click', () => {
     total: `${totalPrice}₽`
   };
 
-  console.log('Отправляем данные:', JSON.stringify(data));  // Логируем данные перед отправкой
+  console.log("Данные для отправки в Telegram:", data);  // Логируем данные перед отправкой
   tg.sendData(JSON.stringify(data));  // Отправляем данные в Telegram
   tg.close();  // Закрываем WebApp
 });
