@@ -81,3 +81,26 @@ function goToCheckout() {
   localStorage.setItem("cart", JSON.stringify(selected));
   window.location.href = "checkout.html";
 }
+
+document.querySelector(".send").addEventListener("click", function (e) {
+    e.preventDefault(); // Не даем форме перезагрузить страницу
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const phone = document.getElementById("phone").value;
+
+    const orderItems = []; // Здесь ваши товары
+    document.querySelectorAll(".order-item").forEach(item => {
+        orderItems.push(item.textContent);
+    });
+
+    const data = {
+        name: name,
+        email: email,
+        phone: phone,
+        order: orderItems.join(", ")
+    };
+
+    // Отправляем данные в Telegram-бота
+    Telegram.WebApp.sendData(JSON.stringify(data));
+});
