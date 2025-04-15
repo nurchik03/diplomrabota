@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Меню Пиццы</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+
+  <h1>🍕 Меню пиццы</h1>
+
+  <div class="grid" id="pizza-grid">
+    <!-- Пиццы будут загружены через JS -->
+  </div>
+
+  <div class="summary">
+    <p>Итого: <span id="total-price">0</span> ₽</p>
+    <button onclick="goToCheckout()">Оформить заказ</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
