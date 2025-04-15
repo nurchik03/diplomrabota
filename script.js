@@ -83,24 +83,28 @@ function goToCheckout() {
 }
 
 document.querySelector(".send").addEventListener("click", function (e) {
-    e.preventDefault(); // Не даем форме перезагрузить страницу
+  e.preventDefault();
 
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const phone = document.getElementById("phone").value;
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const address = document.getElementById("address").value.trim();
 
-    const orderItems = []; // Здесь ваши товары
-    document.querySelectorAll(".order-item").forEach(item => {
-        orderItems.push(item.textContent);
-    });
+  const orderItems = JSON.parse(localStorage.getItem("cart") || "[]");
+  const total = orderItems.reduce((sum, item) => sum + item.price * item.count, 0);
 
-    const data = {
-        name: name,
-        email: email,
-        phone: phone,
-        order: orderItems.join(", ")
-    };
+  const data = {
+    name,
+    phone,
+    address,
+    order: orderItems,
+    total
+  };
 
-    // Отправляем данные в Telegram-бота
+  // Отправка в Telegram WebApp
+  if (window.Telegram.WebApp) {
     Telegram.WebApp.sendData(JSON.stringify(data));
+    Telegram.WebApp.close();
+  } else {
+    alert("Бот не инициализирован в Telegram WebApp.");
+  }
 });
