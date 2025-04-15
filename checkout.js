@@ -35,12 +35,16 @@ document.getElementById("checkout-form").addEventListener("submit", (e) => {
   const phone = document.getElementById("phone").value.trim();
   const address = document.getElementById("address").value.trim();
 
-  const orderData = {
-    name,
-    phone,
-    address,
-    order: cart,
-  };
+  const total = cart.reduce((sum, item) => sum + item.price * item.count, 0);
+
+const orderData = {
+  name,
+  phone,
+  address,
+  order: cart,
+  total: total
+};
+
 
   // Отправка в Telegram WebApp
   if (window.Telegram.WebApp) {
