@@ -2,6 +2,12 @@ const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 const orderList = document.getElementById("order-list");
 const totalDisplay = document.getElementById("total-checkout");
 
+
+function sendOrder() {
+  console.log("Кнопка нажата");
+}
+
+
 function renderCart() {
   orderList.innerHTML = "";
   let total = 0;
