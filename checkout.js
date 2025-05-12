@@ -54,6 +54,7 @@ const orderData = {
 
   // Отправка в Telegram WebApp
   if (window.Telegram.WebApp) {
+     console.log("Отправляем данные:", orderData);  // <-- вот сюда
     Telegram.WebApp.sendData(JSON.stringify(orderData));
     Telegram.WebApp.close();
   } else {
