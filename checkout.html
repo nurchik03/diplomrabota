@@ -4,15 +4,14 @@
   <meta charset="UTF-8">
   <title>Оформление заказа</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script> <!-- Вот это добавлено -->
 </head>
 <body>
 
   <h1>📦 Оформление заказа</h1>
 
-
   <!-- Кнопка назад в меню -->
   <a href="index.html" class="back-btn">← в меню</a>
-
 
   <form id="checkout-form">
     <label>Имя:</label>
@@ -29,8 +28,7 @@
 
     <p>Итого: <span id="total-checkout">0</span> ₽</p>
 
-    <button class="send" onclick="sendOrder()">Отправить заказ</button>
-
+    <button class="send" type="submit">Отправить заказ</button>
   </form>
 
   <script src="checkout.js"></script>
