@@ -73,15 +73,20 @@ function updateTotal() {
 
 function goToCheckout() {
   const selected = Object.values(order).filter(p => p.count > 0);
+
   if (selected.length === 0) {
-    alert("Выберите хотя бы одну пиццу 🍕");
+    alert("Выберите хотя бы одну пиццу.");
     return;
   }
 
+  // Сохраняем выбранные товары в localStorage
   localStorage.setItem("cart", JSON.stringify(selected));
+
+  // Переход на страницу оформления заказа
   window.location.href = "checkout.html";
 }
 
+// Функция отправки данных
 document.querySelector(".send").addEventListener("click", function (e) {
   e.preventDefault();
 
@@ -89,9 +94,24 @@ document.querySelector(".send").addEventListener("click", function (e) {
   const phone = document.getElementById("phone").value.trim();
   const address = document.getElementById("address").value.trim();
 
+  // Валидация
+  if (!name || !phone || !address) {
+    alert("Пожалуйста, заполните все поля: имя, телефон и адрес.");
+    return;
+  }
+
+  // Получение заказа из localStorage
   const orderItems = JSON.parse(localStorage.getItem("cart") || "[]");
+
+  if (orderItems.length === 0) {
+    alert("Корзина пуста. Вернитесь и выберите пиццу.");
+    return;
+  }
+
+  // Общая сумма заказа
   const total = orderItems.reduce((sum, item) => sum + item.price * item.count, 0);
 
+  // Подготовка данных
   const data = {
     name,
     phone,
@@ -100,11 +120,11 @@ document.querySelector(".send").addEventListener("click", function (e) {
     total
   };
 
-  // Отправка в Telegram WebApp
-  if (window.Telegram.WebApp) {
-    Telegram.WebApp.sendData(JSON.stringify(data));
-    Telegram.WebApp.close();
+  // Проверка и отправка в Telegram WebApp
+  if (window.Telegram && Telegram.WebApp) {
+    Telegram.WebApp.sendData(JSON.stringify(data)); // Отправляем данные в бот
+    Telegram.WebApp.close(); // Закрываем WebApp
   } else {
-    alert("Бот не инициализирован в Telegram WebApp.");
+    alert("Приложение не запущено через Telegram WebApp. Оформите заказ через Telegram.");
   }
 });
