@@ -28,8 +28,36 @@
 
     <p>Итого: <span id="total-checkout">0</span> ₽</p>
 
-    <button class="send" type="submit">Отправить заказ</button>
+    <button class="send">Отправить заказ</button>
   </form>
+
+  <script>
+document.querySelector(".send").addEventListener("click", function (e) {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const address = document.getElementById("address").value.trim();
+
+  const orderItems = JSON.parse(localStorage.getItem("cart") || "[]");
+  const total = orderItems.reduce((sum, item) => sum + item.price * item.count, 0);
+
+  const data = {
+    name,
+    phone,
+    address,
+    order: orderItems,
+    total
+  };
+
+  if (window.Telegram.WebApp) {
+    Telegram.WebApp.sendData(JSON.stringify(data));
+    Telegram.WebApp.close();
+  } else {
+    alert("Бот не инициализирован в Telegram WebApp.");
+  }
+});
+</script>
 
   <script src="checkout.js"></script>
 </body>
